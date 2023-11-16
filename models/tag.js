@@ -1,5 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection'); 
+const ProductTag = require('./productTag');
+const Product = require('./product');
 
 class Tag extends Model {}
 
@@ -20,5 +22,10 @@ Tag.init({
   underscored: true,
   modelName: 'tag', 
 });
+
+Tag.belongsToMany(Product, {
+    through: ProductTag,
+    foreignKey: 'tag_id',
+  });
 
 module.exports = Tag;

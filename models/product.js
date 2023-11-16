@@ -1,5 +1,9 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection'); 
+const Category = require('./category'); // Adjust the path as needed
+const Tag = require('./tag'); // Adjust the path as needed
+const ProductTag = require('./productTag');
+
 class Product extends Model {}
 
 Product.init({
@@ -43,5 +47,14 @@ Product.init({
   underscored: true,
   modelName: 'product', 
 });
+
+Product.belongsTo(Category, {
+    foreignKey: 'category_id',
+  });
+
+  Product.belongsToMany(Tag, {
+    through: ProductTag,
+    foreignKey: 'product_id',
+  });
 
 module.exports = Product;
