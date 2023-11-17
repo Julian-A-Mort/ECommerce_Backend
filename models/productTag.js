@@ -1,7 +1,8 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection'); 
+const { Model } = require('sequelize');
 
-class ProductTag extends Model {}
+module.exports = (sequelize, DataTypes) => {
+    class ProductTag extends Model {}
+
 
 ProductTag.init({
   id: {
@@ -31,5 +32,5 @@ ProductTag.init({
   underscored: true,
   modelName: 'productTag', 
 });
-
-module.exports = ProductTag;
+return ProductTag;
+};

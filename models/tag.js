@@ -1,9 +1,14 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection'); 
-const ProductTag = require('./productTag');
-const Product = require('./product');
+const { Model } = require('sequelize');
 
-class Tag extends Model {}
+module.exports = (sequelize, DataTypes) => {
+    class Tag extends Model {
+        static associate(models) {
+            Tag.belongsToMany(models.product, {
+                through: models.productTag,
+                foreignKey: 'tag_id',
+            });
+        }
+    }
 
 Tag.init({
   id: {
@@ -23,9 +28,5 @@ Tag.init({
   modelName: 'tag', 
 });
 
-Tag.belongsToMany(Product, {
-    through: ProductTag,
-    foreignKey: 'tag_id',
-  });
-
-module.exports = Tag;
+  return Tag;
+};

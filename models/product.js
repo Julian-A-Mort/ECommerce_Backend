@@ -1,10 +1,18 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection'); 
-const Category = require('./category'); // Adjust the path as needed
-const Tag = require('./tag'); // Adjust the path as needed
-const ProductTag = require('./productTag');
+const { Model } = require('sequelize');
 
-class Product extends Model {}
+module.exports = (sequelize, DataTypes) => {
+    class Product extends Model {
+        static associate(models) {
+            Product.belongsTo(models.category, {
+                foreignKey: 'category_id',
+            });
+
+            Product.belongsToMany(models.tag, {
+                through: models.productTag,
+                foreignKey: 'product_id',
+            });
+        }
+    }
 
 Product.init({
   id: {
@@ -48,13 +56,5 @@ Product.init({
   modelName: 'product', 
 });
 
-Product.belongsTo(Category, {
-    foreignKey: 'category_id',
-  });
-
-  Product.belongsToMany(Tag, {
-    through: ProductTag,
-    foreignKey: 'product_id',
-  });
-
-module.exports = Product;
+  return Product;
+};
