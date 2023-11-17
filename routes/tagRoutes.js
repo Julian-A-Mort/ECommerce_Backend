@@ -20,18 +20,18 @@ router.get('/', async (req, res) => {
 // GET a single tag 
 router.get('/:id', async (req, res) => {
   try {
-    const tag = await tag.findByPk(req.params.id, {
+    const singleTag = await tag.findByPk(req.params.id, {
       include: [{
         model: product,
         through: productTag
       }]
     });
 
-    if (!tag) {
+    if (!singleTag) {
       return res.status(404).json({ message: 'Tag not found' });
     }
 
-    res.json(tag);
+    res.json(singleTag);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
