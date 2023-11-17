@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { Category, Product } = require('../models');
+const { category, product } = require('../models');
 
 // GET all categories
 router.get('/', async (req, res) => {
   try {
-    const categories = await Category.findAll({
-      include: [{ model: Product }]
+    const categories = await category.findAll({
+      include: [{ model: product }]
     });
     res.json(categories);
   } catch (error) {
@@ -17,8 +17,8 @@ router.get('/', async (req, res) => {
 // GET by ID
 router.get('/:id', async (req, res) => {
   try {
-    const category = await Category.findByPk(req.params.id, {
-      include: [{ model: Product }]
+    const category = await category.findByPk(req.params.id, {
+      include: [{ model: product }]
     });
 
     if (!category) {
@@ -34,7 +34,7 @@ router.get('/:id', async (req, res) => {
 // POST 
 router.post('/', async (req, res) => {
   try {
-    const newCategory = await Category.create(req.body);
+    const newCategory = await category.create(req.body);
     res.status(201).json(newCategory);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -44,12 +44,12 @@ router.post('/', async (req, res) => {
 // PUT
 router.put('/:id', async (req, res) => {
   try {
-    const [updated] = await Category.update(req.body, {
+    const [updated] = await category.update(req.body, {
       where: { id: req.params.id }
     });
 
     if (updated) {
-      const updatedCategory = await Category.findByPk(req.params.id);
+      const updatedCategory = await category.findByPk(req.params.id);
       res.status(200).json(updatedCategory);
     } else {
       res.status(404).json({ message: 'Category not found' });
@@ -62,7 +62,7 @@ router.put('/:id', async (req, res) => {
 // DELETE
 router.delete('/:id', async (req, res) => {
   try {
-    const deleted = await Category.destroy({
+    const deleted = await category.destroy({
       where: { id: req.params.id }
     });
 
